@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PerpM</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              nebula: {
+                dark: '#05050A',
+                panel: '#10121B',
+                teal: '#00E0FF',
+                pink: '#FF409A',
+                violet: '#7B4DFF'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    
+    <style>
+       /* Custom Scrollbar for dark theme */
+       ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+       }
+       ::-webkit-scrollbar-track {
+          background: #0B0E14; 
+       }
+       ::-webkit-scrollbar-thumb {
+          background: #2D3748; 
+          border-radius: 3px;
+       }
+       ::-webkit-scrollbar-thumb:hover {
+          background: #4A5568; 
+       }
+       
+       .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+       }
+       .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+       }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-[#05050A]">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

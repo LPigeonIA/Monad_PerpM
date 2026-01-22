@@ -1,0 +1,85 @@
+type MarginEvent @entity {
+  id: ID!
+  trader: String!
+  amount: BigInt!
+  eventType: String!  # "DEPOSIT" 或 "WITHDRAW"
+  timestamp: Int!
+  txHash: String!
+}
+
+type Order @entity {
+  id: ID!
+  trader: String!
+  isBuy: Boolean!
+  price: BigInt!
+  initialAmount: BigInt!
+  amount: BigInt!
+  status: String!  # "OPEN", "FILLED", "CANCELLED"
+  timestamp: Int!
+}
+
+type Trade @entity {
+  id: ID!
+  buyer: String!
+  seller: String!
+  price: BigInt!
+  amount: BigInt!
+  timestamp: Int!
+  txHash: String!
+  buyOrderId: BigInt!
+  sellOrderId: BigInt!
+}
+
+type Position @entity {
+  id: ID!  # trader address
+  trader: String!
+  size: BigInt!
+  entryPrice: BigInt!
+}
+
+# Day 5: Candle - K 线数据
+type Candle @entity {
+  id: ID!  # "1m-timestamp"
+  resolution: String!
+  timestamp: Int!
+  openPrice: BigInt!
+  highPrice: BigInt!
+  lowPrice: BigInt!
+  closePrice: BigInt!
+  volume: BigInt!
+}
+
+# Day 5: LatestCandle - 最新价格状态（用于新 K 线的 open 价格）
+type LatestCandle @entity {
+  id: ID!  # "1"
+  closePrice: BigInt!
+  timestamp: Int!
+}
+
+type FundingEvent @entity {
+  id: ID!
+  eventType: String!  # "GLOBAL_UPDATE" 或 "USER_PAID"
+  trader: String      # 仅 USER_PAID 时有值
+  cumulativeRate: BigInt
+  payment: BigInt     # 仅 USER_PAID 时有值
+  timestamp: Int!
+}
+
+type Liquidation @entity {
+  id: ID!
+  trader: String!
+  liquidator: String!
+  amount: BigInt!
+  fee: BigInt!
+  timestamp: Int!
+  txHash: String!
+}
+
+type TraderStat @entity {
+  id: ID!  # trader address
+  totalVolume: BigInt!
+  totalPnl: BigInt!
+  tradeCount: Int!
+  winCount: Int!
+  lastTradeTime: Int!
+}

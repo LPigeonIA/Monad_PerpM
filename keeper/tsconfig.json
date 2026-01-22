@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "paths": {
+            "@frontend/*": ["../frontend/*"]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "../frontend/onchain/ExchangeABI.ts"
+    ]
+}

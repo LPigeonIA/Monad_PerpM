@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude plugin install:*)",
+      "Bash(claude plugin marketplace list)",
+      "Bash(claude plugin list:*)",
+      "Bash(claude plugin marketplace --help:*)",
+      "Bash(claude plugin marketplace add:*)",
+      "Bash(curl:*)",
+      "Bash(tree:*)"
+    ]
+  }
+}

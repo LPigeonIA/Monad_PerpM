@@ -1,0 +1,35 @@
+# === System ===
+.DS_Store
+*.log
+.env.local
+*.local
+
+# === Dependencies ===
+node_modules/
+
+# === Build Outputs ===
+dist/
+out/
+cache/
+
+# === Contract (Foundry) ===
+contract/lib/
+contract/broadcast/
+contract/cache/
+contract/out/
+
+# === Indexer (Envio) ===
+indexer/generated/
+
+# === Temporary/Debug ===
+output/
+process/
+
+# === Verification Tools ===
+VERIFY_DAY_GUIDE.md
+
+# === IDE ===
+.vscode/
+.idea/
+
+frontend/onchain/ExchangeABI.ts

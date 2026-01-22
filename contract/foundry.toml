@@ -1,0 +1,21 @@
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libraries = []
+libs = ["lib"]
+optimizer = true
+optimizer_runs = 200
+evm_version = "paris"
+ffi = false
+remappings = ["@openzeppelin/=lib/openzeppelin-contracts/"]
+
+[fmt]
+line_length = 120
+multiline_func_header = "params_first"
+wrap_comments = true
+
+[rpc_endpoints]
+# Placeholder endpoint for Monad testnet; replace with real RPC when deploying
+testnet = "https://example.monad-testnet.rpc"

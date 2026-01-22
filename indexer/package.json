@@ -1,0 +1,17 @@
+{
+    "name": "monad-exchange-indexer",
+    "version": "0.1.0",
+    "scripts": {
+        "codegen": "envio codegen",
+        "start": "envio start",
+        "dev": "envio dev",
+        "stop": "envio stop"
+    },
+    "dependencies": {
+        "envio": "latest"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0"
+    }
+}

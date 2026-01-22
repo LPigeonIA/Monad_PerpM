@@ -1,8 +1,41 @@
-# Monad Perp Exchange - 永续合约交易所
+# PerpM: Decentralized Perpetual Exchange on Monad
 
-> ⚠️ **本项目为技术展示作品，仅供学习参考，不可用于生产环境。**
+![Monad](https://img.shields.io/badge/Network-Monad-purple) ![Solidity](https://img.shields.io/badge/Smart_Contract-Solidity-363636) ![Frontend](https://img.shields.io/badge/Frontend-React_19-61DAFB) ![Indexer](https://img.shields.io/badge/Indexer-Envio-FF2D55)
 
-基于 Monad 链构建的完整永续合约交易所，采用模块化架构设计，实现了 DeFi 协议的所有核心功能。
+**PerpM** 是一个基于 **Monad** 高性能公链构建的全栈去中心化永续合约交易所（DEX）。本项目实现了一套完整的**链上订单簿（On-Chain Order Book）**系统，旨在提供媲美 CEX 的交易体验，同时具备 DeFi 的透明性与抗审查性。
+
+核心特性包括**双重价格清算防御（TWAP + Mark Price）**、**动态资金费率**以及基于 **Envio** 的实时数据索引与排行榜系统。
+
+## 🚀 核心特性 (Key Features)
+
+*   **🛡️ 链上订单簿 (On-Chain Order Book)**
+    *   采用双向链表结构实现高效的链上撮合引擎。
+    *   支持限价单（Limit Order）与市价单（Market Order）。
+    *   严格的价格-时间优先（Price-Time Priority）撮合算法。
+
+*   **🔒 金融级风控系统 (Risk Engine)**
+    *   **TWAP 防御**：引入时间加权平均价格（Time-Weighted Average Price）环形缓冲区，有效防御闪电贷攻击与恶意价格操纵。
+    *   **双重清算检查**：清算逻辑同时校验瞬时标记价格与 TWAP 价格，防止因短期波动导致的错误清算。
+    *   **动态资金费率**：类币安的资金费率模型，通过 Keeper 网络动态平衡多空费率，锚定现货指数。
+
+*   **📊 实时数据索引与可视化 (Data & Analytics)**
+    *   集成 **Envio Indexer**，实现毫秒级链上事件索引。
+    *   **实盘排行榜**：基于真实已实现盈亏（Realized PnL）的交易员排行榜。
+    *   **K 线数据**：提供分钟级的 OHLCV 价格数据流。
+
+*   **⚡ 全栈架构 (Full-Stack Architecture)**
+    *   **Contracts**: Solidity + Foundry (Gas 优化与模糊测试)
+    *   **Frontend**: React 19 + MobX + Tailwind CSS (玻璃拟态 UI)
+    *   **Indexer**: Envio (HyperSync 高速同步)
+    *   **Keeper**: TypeScript + Viem (自动化清算与预言机更新)
+
+## 🛠️ 技术栈 (Tech Stack)
+
+*   **Blockchain**: Monad (EVM Compatible)
+*   **Smart Contracts**: Solidity ^0.8.20, Foundry
+*   **Frontend**: React, Vite, MobX, viem, wagmi
+*   **Indexer**: Envio
+*   **Scripting**: Bash, Cast (Foundry Tools)
 
 ---
 
@@ -321,32 +354,49 @@ uint256 healthFactor = (margin + unrealizedPnL) * 100
 
 ---
 
-## 🚀 快速开始
+## 🚀 快速开始 (Quick Start)
 
-### 环境要求
-
-| 工具 | 版本要求 | 说明 |
-|------|---------|------|
-| **Foundry** | Latest | `curl -L https://foundry.paradigm.xyz \| bash` |
-| **Node.js** | >= 18.0 | [nodejs.org](https://nodejs.org/) |
-| **pnpm** | >= 8.0 | `npm install -g pnpm` |
-| **Git** | Latest | [git-scm.com](https://git-scm.com/) |
-
-### 一键启动
+### 模式一：懒人一键模式 (推荐)
+适合想快速预览项目效果的开发者。该模式会自动启动所有服务（链、合约、前端、索引器、Keeper）并自动生成演示数据。
 
 ```bash
-# 克隆项目
-git clone https://github.com/LPigeonIA/Monad_PerpM.git
-cd Monad_PerpM
+# 给予脚本执行权限（如果需要）
+chmod +x quickstart.sh
 
-# 运行快速启动脚本
+# 一键启动
 ./quickstart.sh
 ```
 
-**脚本自动执行**:
-1. ✅ 启动 Anvil 本地测试链
-2. ✅ 编译并部署智能合约
-3. ✅ 安装前端依赖
+启动完成后，打开浏览器访问 `http://localhost:3000` 即可看到包含排行榜数据的交易界面。
+
+---
+
+### 模式二：极客调试模式 (手动分步)
+适合需要修改代码、查看特定服务日志或进行深度调试的开发者。
+
+#### 1. 启动基础服务
+启动 Anvil 本地链、部署合约、启动 Envio 索引器和 React 前端。
+```bash
+./scripts/start.sh
+```
+
+#### 2. 生成排行榜数据
+模拟一场包含 Alice、Bob 和 Carol 的多空博弈，生成真实的排行榜数据。
+```bash
+./scripts/seed_leaderboard.sh
+```
+
+#### 3. 手动控制 Keeper (可选)
+Keeper 默认已在 `start.sh` 中后台启动。如果你需要手动调试 Keeper（例如查看详细的清算日志）：
+
+```bash
+# 1. 先停止自动运行的 keeper 进程
+pkill -f "ts-node src/index.ts"
+
+# 2. 进入目录手动运行
+cd keeper
+npm start
+```
 4. ✅ 配置环境变量
 5. ✅ 启动前端开发服务器
 

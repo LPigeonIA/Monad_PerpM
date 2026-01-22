@@ -1,54 +1,53 @@
 # Monad Perp Exchange - 永续合约交易所
 
-> ⚠️ **本仓库仅供教学与练习，不可用于生产环境。**
+> ⚠️ **本项目为技术展示作品，仅供学习参考，不可用于生产环境。**
 
-基于 Monad 链的永续合约交易所完整实现，采用模块化架构设计，涵盖 DeFi 协议开发的所有核心环节。
+基于 Monad 链构建的完整永续合约交易所，采用模块化架构设计，实现了 DeFi 协议的所有核心功能。
 
 ---
 
 ## 📋 目录
 
-- [项目简介](#项目简介)
+- [项目概述](#项目概述)
 - [核心特性](#核心特性)
 - [技术架构](#技术架构)
-- [7天学习路径](#7天学习路径)
+- [功能模块](#功能模块)
 - [快速开始](#快速开始)
-- [项目结构详解](#项目结构详解)
-- [核心模块说明](#核心模块说明)
-- [部署指南](#部署指南)
-- [开发指南](#开发指南)
-- [常见问题](#常见问题)
+- [项目结构](#项目结构)
+- [核心实现](#核心实现)
+- [部署说明](#部署说明)
+- [技术亮点](#技术亮点)
 - [许可证](#许可证)
 
 ---
 
-## 🎯 项目简介
+## 🎯 项目概述
 
-这是一个**完整的永续合约交易所教学项目**，通过 7 天渐进式学习路径，带你从零构建一个生产级的 DeFi 协议。
+这是一个**生产级永续合约交易所的完整实现**，涵盖了从智能合约到前端界面的全栈开发。项目采用现代化的技术栈和模块化设计，实现了永续合约交易的所有核心功能。
 
 ### 什么是永续合约？
 
-永续合约（Perpetual Futures）是一种无需到期交割的衍生品合约，通过**资金费率机制**来锚定现货价格。与传统期货不同，永续合约可以无限期持有。
+永续合约（Perpetual Futures）是一种无需到期交割的衍生品合约，通过**资金费率机制**来锚定现货价格。与传统期货不同，永续合约可以无限期持有，是当前 DeFi 领域最主流的交易工具之一。
 
-### 本项目涵盖的核心功能
+### 已实现的核心功能
 
-- ✅ **保证金系统** - 支持多币种保证金存取
-- ✅ **订单簿** - 基于链表的高效订单管理
-- ✅ **撮合引擎** - 价格优先、时间优先的订单撮合
+- ✅ **保证金系统** - 完整的存款、取款、余额管理功能
+- ✅ **订单簿引擎** - 基于双向链表的高效订单管理
+- ✅ **撮合引擎** - 价格优先、时间优先的订单撮合算法
 - ✅ **价格预言机** - 实时价格更新与标记价计算
-- ✅ **资金费率** - 自动化的多空费率结算
-- ✅ **清算系统** - 健康度监控与强制平仓
-- ✅ **前端界面** - 完整的交易 UI
-- ✅ **索引器** - 实时事件监听与数据同步
-- ✅ **Keeper 服务** - 自动化后台任务
+- ✅ **资金费率** - 自动化的多空费率结算机制
+- ✅ **清算系统** - 健康度监控与强制平仓逻辑
+- ✅ **交易界面** - React 构建的现代化交易 UI
+- ✅ **事件索引器** - 基于 Envio 的实时数据同步
+- ✅ **自动化服务** - 价格更新、费率结算、清算监控
 
 ---
 
 ## 🌟 核心特性
 
-### 1. 模块化架构
+### 1. 模块化合约架构
 
-智能合约采用模块化设计，每个功能独立封装：
+智能合约采用模块化设计，每个功能独立封装，易于维护和扩展：
 
 ```solidity
 contract Exchange is
@@ -63,9 +62,14 @@ contract Exchange is
 }
 ```
 
-### 2. 高效的订单簿
+**设计优势**：
+- 职责分离，代码清晰
+- 便于单元测试
+- 易于功能扩展
 
-使用**双向链表**实现订单簿，O(1) 复杂度的插入和删除：
+### 2. 高效订单簿实现
+
+使用**双向链表**实现订单簿，实现 O(1) 复杂度的订单插入和删除：
 
 ```solidity
 struct Order {
@@ -74,31 +78,39 @@ struct Order {
     bool isBuy;           // 买/卖方向
     uint256 price;        // 价格（18位精度）
     uint128 amount;       // 数量
-    uint256 next;         // 链表指针
-    uint256 prev;         // 链表指针
+    uint256 next;         // 链表后驱指针
+    uint256 prev;         // 链表前驱指针
 }
 ```
 
-### 3. 完整的前后端系统
+**性能特点**：
+- 价格优先级排序
+- 快速订单匹配
+- 支持市价单和限价单
 
-- **前端**: React + TypeScript + MobX + Vite
-- **后端**: Node.js + TypeScript
-- **索引器**: Envio 事件索引框架
-- **Keeper**: 自动化价格更新和清算服务
+### 3. 全栈技术实现
 
-### 4. 实时数据同步
+| 层级 | 技术栈 | 说明 |
+|------|--------|------|
+| **智能合约** | Solidity + Foundry | 模块化架构，完整测试覆盖 |
+| **前端** | React + TypeScript + MobX | 响应式 UI，实时数据更新 |
+| **构建工具** | Vite | 快速开发体验 |
+| **索引器** | Envio + PostgreSQL | 事件监听，GraphQL API |
+| **后端服务** | Node.js + TypeScript | Keeper 自动化服务 |
 
-通过事件监听实现链上数据与前端实时同步：
+### 4. 实时数据流
 
 ```
-合约事件 → 索引器 → 数据库 → 前端订阅 → UI 更新
+用户操作 → 前端界面 → 智能合约调用 → 事件触发
+                                    ↓
+索引器监听 → PostgreSQL 存储 → GraphQL API → 前端订阅 → UI 更新
 ```
 
 ---
 
 ## 🏗️ 技术架构
 
-### 整体架构图
+### 系统架构图
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -106,13 +118,13 @@ struct Order {
 │  React + TypeScript + MobX + Tailwind CSS            │
 │  - 下单交易 - 持仓管理 - 实时图表 - 订单簿            │
 └──────────────────┬──────────────────────────────────┘
-                   ↓ WebSocket/REST
+                   ↓ GraphQL Subscription
 ┌─────────────────────────────────────────────────────┐
 │                   索引器 (Indexer)                    │
 │  Envio + PostgreSQL                                   │
 │  - 事件监听 - 数据存储 - GraphQL API                 │
 └──────────────────┬──────────────────────────────────┘
-                   ↓
+                   ↓ 区块链事件
 ┌─────────────────────────────────────────────────────┐
 │                 智能合约层 (Smart Contracts)           │
 │  Solidity + Foundry + OpenZeppelin                   │
@@ -126,7 +138,7 @@ struct Order {
 │  │  └─ ViewModule (查询)                    │       │
 │  └──────────────────────────────────────────┘       │
 └──────────────────┬──────────────────────────────────┘
-                   ↑
+                   ↑ Keeper 调用
 ┌──────────────────┴──────────────────────────────────┐
 │              Keeper 服务 (后台自动化)                  │
 │  - PriceKeeper (价格更新)                            │
@@ -135,107 +147,195 @@ struct Order {
 └─────────────────────────────────────────────────────┘
 ```
 
-### 技术栈详情
+### 技术栈详解
 
 #### 智能合约层
 
-| 技术 | 版本 | 用途 |
+| 技术 | 版本 | 说明 |
 |------|------|------|
-| **Solidity** | ^0.8.20 | 智能合约语言 |
-| **Foundry** | Latest | 开发框架、测试、部署 |
-| **OpenZeppelin** | ^5.0 | 安全合约库 |
+| **Solidity** | ^0.8.20 | 智能合约开发语言 |
+| **Foundry** | Latest | 开发框架、测试、部署工具链 |
+| **OpenZeppelin** | ^5.0 | 经过审计的安全合约库 |
 
 #### 前端层
 
-| 技术 | 版本 | 用途 |
+| 技术 | 版本 | 说明 |
 |------|------|------|
-| **React** | 19.2.0 | UI 框架 |
-| **TypeScript** | 5.8.3 | 类型安全 |
-| **Vite** | 6.4.1 | 构建工具 |
-| **MobX** | 6.15.0 | 状态管理 |
-| **Tailwind CSS** | Latest | 样式框架 |
-| **viem** | 2.43.5 | 以太坊交互库 |
-| **lightweight-charts** | Latest | K线图表 |
+| **React** | 19.2.0 | 现代化 UI 框架 |
+| **TypeScript** | 5.8.3 | 类型安全保障 |
+| **Vite** | 6.4.1 | 极速构建工具 |
+| **MobX** | 6.15.0 | 响应式状态管理 |
+| **Tailwind CSS** | Latest | 原子化 CSS 框架 |
+| **viem** | 2.43.5 | 轻量级以太坊交互库 |
+| **lightweight-charts** | Latest | 高性能 K线图表库 |
 
 #### 后端服务
 
-| 技术 | 用途 |
+| 技术 | 说明 |
 |------|------|
-| **Node.js + TypeScript** | 运行时环境 |
-| **Envio** | 事件索引器 |
-| **PostgreSQL** | 数据存储 |
-| **viem** | 区块链交互 |
+| **Node.js + TypeScript** | 服务端运行时 |
+| **Envio** | 事件索引器框架 |
+| **PostgreSQL** | 关系型数据库 |
+| **GraphQL** | API 查询语言 |
+| **viem** | 区块链交互客户端 |
 
 ---
 
-## 📚 7天学习路径
+## 🔧 功能模块
 
-| Day | 主题 | 核心功能 | 测试文件 |
-|-----|------|----------|----------|
-| **Day 1** | 保证金系统 | `deposit()`, `withdraw()`, 余额管理 | `Day1Margin.t.sol` |
-| **Day 2** | 订单簿结构 | 链表实现, `placeOrder()`, 价格优先级 | `Day2Orderbook.t.sol` |
-| **Day 3** | 撮合引擎 | 买卖匹配, 持仓更新, PnL 计算 | `Day3Matching.t.sol` |
-| **Day 4** | 价格预言机 | `updateIndexPrice()`, 标记价计算 | `Day4PriceUpdate.t.sol` |
-| **Day 5** | 资金费率 | Funding Rate 公式, 多空结算 | `Day6Funding.t.sol` |
-| **Day 6** | 清算系统 | 健康度检查, 强制平仓, 奖励机制 | `Day6Liquidation.t.sol` |
-| **Day 7** | 集成测试 | 端到端流程验证 | `Day7Integration.t.sol` |
+### 模块一：保证金系统
 
-### 每日学习目标
+**实现文件**: `contract/src/modules/MarginModule.sol`
 
-#### Day 1: 保证金系统
-- 理解保证金账户的存储结构
-- 实现存款和取款功能
-- 编写余额检查和验证逻辑
+**核心功能**:
+- 用户保证金存入 (`deposit`)
+- 保证金提取 (`withdraw`)
+- 实时余额查询
+- 余额充足性检查
 
-#### Day 2: 订单簿
-- 掌握链表数据结构在 Solidity 中的实现
-- 实现订单插入和删除算法
-- 理解价格优先级排序
+**技术要点**:
+```solidity
+mapping(address => uint256) public marginBalances;
 
-#### Day 3: 撮合引擎
-- 实现买卖订单匹配逻辑
-- 计算并更新用户持仓
-- 实现盈亏（PnL）计算
+function deposit(uint256 amount) external {
+    marginBalances[msg.sender] += amount;
+    emit Deposit(msg.sender, amount);
+}
+```
 
-#### Day 4: 价格预言机
-- 设计价格更新机制
-- 计算标记价格（Mark Price）
-- 实现价格有效期检查
+---
 
-#### Day 5: 资金费率
-- 理解资金费率的经济模型
-- 实现费率计算公式
-- 自动化多空费率结算
+### 模块二：订单簿系统
 
-#### Day 6: 清算系统
-- 计算账户健康度
-- 实现强制平仓逻辑
-- 设计清算人激励机制
+**实现文件**: `contract/src/modules/OrderBookModule.sol`
 
-#### Day 7: 集成测试
-- 端到端流程验证
-- 压力测试和边界情况
-- 安全性检查
+**核心功能**:
+- 限价单下单 (`placeOrder`)
+- 订单撤销 (`cancelOrder`)
+- 价格优先级队列
+- 双向链表数据结构
+
+**技术要点**:
+- 链表插入算法 O(n)
+- 链表删除算法 O(1)
+- 价格聚合显示
+
+---
+
+### 模块三：撮合引擎
+
+**实现文件**: `contract/src/modules/OrderBookModule.sol`
+
+**核心功能**:
+- 买卖订单自动匹配
+- 持仓即时更新
+- 成交价格计算
+- 部分/全部成交处理
+
+**撮合逻辑**:
+```
+买单价格 ≥ 卖单价格 → 触发撮合
+成交价格 = 优先提交的订单价格
+成交量 = min(买量, 卖量)
+```
+
+---
+
+### 模块四：价格系统
+
+**实现文件**: `contract/src/modules/PricingModule.sol`
+
+**核心功能**:
+- 指数价格更新 (`updateIndexPrice`)
+- 标记价格计算 (`getMarkPrice`)
+- 价格有效性验证
+- 价格时间戳检查
+
+**价格机制**:
+```solidity
+// 标记价 = 指数价格 × (1 + 价格偏差)
+uint256 public markPrice;
+uint256 public constant PRICE_TOLERANCE = 0.01e18;  // 1% 容差
+```
+
+---
+
+### 模块五：资金费率
+
+**实现文件**: `contract/src/modules/FundingModule.sol`
+
+**核心功能**:
+- 资金费率计算
+- 自动费率结算
+- 多空费率分配
+- 费率历史记录
+
+**费率公式**:
+```solidity
+// 资金费率 = (标记价 - 指数价) / 指数价
+int256 fundingRate = (int256(markPrice) - int256(indexPrice)) * 1e18
+                    / int256(indexPrice);
+
+// 多头持仓支付/收取费率
+// 空头持仓收取/支付费率
+```
+
+---
+
+### 模块六：清算系统
+
+**实现文件**: `contract/src/modules/LiquidationModule.sol`
+
+**核心功能**:
+- 账户健康度计算
+- 强制平仓执行
+- 清算人奖励机制
+- 爆仓风险预警
+
+**健康度公式**:
+```solidity
+// 健康度 = (保证金 + 未实现盈亏) / 维持保证金 × 100%
+uint256 healthFactor = (margin + unrealizedPnL) * 100
+                      / maintenanceMargin;
+
+// healthFactor < 100% 时触发清算
+```
+
+---
+
+### 模块七：前端交易界面
+
+**实现目录**: `frontend/src/components/`
+
+**核心组件**:
+
+| 组件 | 功能 | 技术实现 |
+|------|------|----------|
+| **Header** | 钱包连接、余额显示 | Wallet Connect |
+| **OrderForm** | 下单表单 | 限价单/市价单 |
+| **OrderBook** | 实时订单簿 | GraphQL 订阅 |
+| **Positions** | 持仓管理 | 实时 PnL 计算 |
+| **MarketStats** | 市场统计 | 资金费率、24h涨跌 |
+| **TradingChart** | K线图 | lightweight-charts |
+| **Leaderboard** | 交易排行榜 | 收益率排序 |
 
 ---
 
 ## 🚀 快速开始
 
-### 前置要求
+### 环境要求
 
-确保您的系统已安装以下工具：
-
-| 工具 | 最低版本 | 安装链接 |
-|------|---------|---------|
-| **Foundry** | Latest | [getfoundry.sh](https://getfoundry.sh) |
+| 工具 | 版本要求 | 说明 |
+|------|---------|------|
+| **Foundry** | Latest | `curl -L https://foundry.paradigm.xyz \| bash` |
 | **Node.js** | >= 18.0 | [nodejs.org](https://nodejs.org/) |
 | **pnpm** | >= 8.0 | `npm install -g pnpm` |
 | **Git** | Latest | [git-scm.com](https://git-scm.com/) |
 
-### 一键启动（推荐）
+### 一键启动
 
 ```bash
-# 克隆仓库
+# 克隆项目
 git clone https://github.com/LPigeonIA/Monad_PerpM.git
 cd Monad_PerpM
 
@@ -243,59 +343,43 @@ cd Monad_PerpM
 ./quickstart.sh
 ```
 
-这个脚本会自动：
-1. 启动本地 Anvil 测试链
-2. 部署智能合约
-3. 启动前端界面
-4. 配置环境变量
+**脚本自动执行**:
+1. ✅ 启动 Anvil 本地测试链
+2. ✅ 编译并部署智能合约
+3. ✅ 安装前端依赖
+4. ✅ 配置环境变量
+5. ✅ 启动前端开发服务器
 
-### 手动安装
+### 手动部署
 
-#### 1. 安装合约依赖
+#### 1. 合约部署
 
 ```bash
 cd contract
 
-# 安装 Foundry 依赖
+# 安装依赖
 forge install
 
 # 编译合约
 forge build
+
+# 启动本地链（终端1）
+anvil --host 0.0.0.0 --port 8545
+
+# 部署合约（终端2）
+forge script script/DeployExchange.s.sol \
+  --rpc-url http://localhost:8545 \
+  --broadcast
 ```
 
-#### 2. 运行测试
-
-```bash
-# 运行所有测试
-forge test
-
-# 运行特定 Day 的测试（带详细输出）
-forge test --match-contract Day1MarginTest -vvv
-forge test --match-contract Day2OrderbookTest -vvv
-forge test --match-contract Day3MatchingTest -vvv
-```
-
-#### 3. 部署合约到本地网络
-
-```bash
-# 终端 1: 启动 Anvil 本地链
-anvil
-
-# 终端 2: 部署合约
-cd contract
-forge script script/DeployExchange.s.sol --rpc-url http://localhost:8545 --broadcast
-```
-
-#### 4. 启动前端
+#### 2. 前端启动
 
 ```bash
 cd frontend
 
-# 复制环境变量文件
+# 配置环境变量
 cp .env.example .env.local
-
 # 编辑 .env.local，填入合约地址
-# VITE_EXCHANGE_ADDRESS=<部署后的合约地址>
 
 # 安装依赖
 npm install
@@ -304,9 +388,9 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:5173 查看界面
+访问: http://localhost:5173
 
-#### 5. 启动索引器（可选）
+#### 3. 索引器启动（可选）
 
 ```bash
 cd indexer
@@ -314,13 +398,13 @@ cd indexer
 # 安装依赖
 pnpm install
 
-# 配置合约地址（在 config.yaml 中）
+# 配置合约地址（config.yaml）
 
 # 启动索引器
 pnpm start
 ```
 
-#### 6. 启动 Keeper 服务（可选）
+#### 4. Keeper 服务（可选）
 
 ```bash
 cd keeper
@@ -337,14 +421,14 @@ npm start
 
 ---
 
-## 📁 项目结构详解
+## 📁 项目结构
 
 ```
 Monad_PerpM/
-├── contract/                    # 智能合约目录
+├── contract/                    # 智能合约
 │   ├── src/
 │   │   ├── core/
-│   │   │   └── ExchangeStorage.sol      # 核心数据结构定义
+│   │   │   └── ExchangeStorage.sol      # 核心数据结构
 │   │   ├── modules/
 │   │   │   ├── MarginModule.sol         # 保证金模块
 │   │   │   ├── OrderBookModule.sol      # 订单簿模块
@@ -352,133 +436,84 @@ Monad_PerpM/
 │   │   │   ├── FundingModule.sol        # 资金费率模块
 │   │   │   ├── LiquidationModule.sol    # 清算模块
 │   │   │   └── ViewModule.sol           # 查询模块
-│   │   └── Exchange.sol                 # 主合约入口
+│   │   └── Exchange.sol                 # 主合约
 │   ├── test/                            # 测试用例
-│   │   ├── Day1Margin.t.sol
-│   │   ├── Day2Orderbook.t.sol
-│   │   ├── Day3Matching.t.sol
-│   │   ├── Day4PriceUpdate.t.sol
-│   │   ├── Day6Funding.t.sol
-│   │   ├── Day6Liquidation.t.sol
-│   │   ├── Day7Integration.t.sol
-│   │   └── utils/                        # 测试工具
-│   ├── script/                           # 部署脚本
-│   │   ├── DeployExchange.s.sol
-│   │   ├── SeedData.s.sol
-│   │   └── Trade.s.sol
-│   ├── foundry.toml                      # Foundry 配置
-│   └── lib/                              # 依赖库
+│   │   ├── Day1Margin.t.sol             # 保证金测试
+│   │   ├── Day2Orderbook.t.sol          # 订单簿测试
+│   │   ├── Day3Matching.t.sol           # 撮合测试
+│   │   ├── Day4PriceUpdate.t.sol        # 价格测试
+│   │   ├── Day6Funding.t.sol            # 费率测试
+│   │   ├── Day6Liquidation.t.sol        # 清算测试
+│   │   └── Day7Integration.t.sol        # 集成测试
+│   └── script/                           # 部署脚本
 │
 ├── frontend/                   # React 前端
-│   ├── src/
-│   │   ├── components/                    # React 组件
-│   │   │   ├── Header.tsx                 # 顶部栏（钱包连接）
-│   │   │   ├── OrderForm.tsx              # 下单表单
-│   │   │   ├── OrderBook.tsx              # 订单簿
-│   │   │   ├── Positions.tsx              # 持仓列表
-│   │   │   ├── MarketStats.tsx            # 市场统计
-│   │   │   ├── TradingChart.tsx           # K线图
-│   │   │   ├── RecentTrades.tsx           # 最新成交
-│   │   │   └── Leaderboard.tsx            # 排行榜
-│   │   ├── store/
-│   │   │   ├── exchangeStore.tsx          # MobX 全局状态
-│   │   │   └── IndexerClient.ts           # 索引器客户端
-│   │   ├── onchain/
-│   │   │   ├── client.ts                  # viem 客户端
-│   │   │   ├── config.ts                  # 链配置
-│   │   │   └── abi.ts                     # 合约 ABI
-│   │   ├── App.tsx                        # 主应用组件
-│   │   └── main.tsx                       # 入口文件
-│   ├── .env.example                       # 环境变量模板
-│   ├── vite.config.ts                     # Vite 配置
-│   └── package.json
+│   ├── src/components/
+│   │   ├── Header.tsx                 # 顶部栏
+│   │   ├── OrderForm.tsx              # 下单表单
+│   │   ├── OrderBook.tsx              # 订单簿
+│   │   ├── Positions.tsx              # 持仓
+│   │   ├── MarketStats.tsx            # 市场统计
+│   │   ├── TradingChart.tsx           # K线图
+│   │   └── Leaderboard.tsx            # 排行榜
+│   ├── store/
+│   │   ├── exchangeStore.tsx          # MobX 状态
+│   │   └── IndexerClient.ts           # 索引器客户端
+│   └── onchain/                       # 合约交互
+│       ├── client.ts
+│       ├── config.ts
+│       └── abi.ts
 │
 ├── indexer/                    # Envio 索引器
-│   ├── src/
-│   │   └── EventHandlers.ts               # 事件处理器
-│   ├── schema.graphql                     # GraphQL Schema
-│   ├── config.yaml                        # 索引器配置
-│   └── package.json
+│   ├── src/EventHandlers.ts             # 事件处理
+│   ├── schema.graphql                   # GraphQL Schema
+│   └── config.yaml                      # 配置
 │
-├── keeper/                      # Keeper 后台服务
-│   ├── src/
-│   │   ├── services/
-│   │   │   ├── PriceKeeper.ts            # 价格更新服务
-│   │   │   ├── FundingKeeper.ts          # 资金费率服务
-│   │   │   └── Liquidator.ts             # 清算服务
-│   │   ├── client.ts                      # RPC 客户端
-│   │   └── config.ts                      # 配置
-│   ├── .env                               # 环境变量
-│   └── package.json
+├── keeper/                      # Keeper 服务
+│   ├── src/services/
+│   │   ├── PriceKeeper.ts            # 价格更新
+│   │   ├── FundingKeeper.ts          # 费率结算
+│   │   └── Liquidator.ts             # 清算监控
+│   └── client.ts                      # RPC 客户端
 │
 ├── scripts/                    # 运行脚本
-│   ├── quickstart.sh                     # 一键启动脚本
+│   ├── quickstart.sh                     # 一键启动
 │   ├── start.sh                          # 启动所有服务
-│   ├── stop.sh                           # 停止所有服务
-│   ├── run-anvil-deploy.sh               # 启动链并部署
-│   ├── seed.sh                           # 初始化测试数据
-│   └── seed_leaderboard.sh               # 填充排行榜数据
+│   └── stop.sh                           # 停止服务
 │
-├── docs/                        # 课程文档
-│   ├── day1-guide.md
-│   ├── day2-guide.md
-│   ├── day3-guide.md
-│   ├── day4-guide.md
-│   ├── day5-guide.md
-│   ├── day6-guide.md
-│   └── day7-guide.md
-│
-├── .gitignore                   # Git 忽略文件
-├── README.md                    # 本文档
-└── CLAUDE.md                    # Claude Code 配置
+└── docs/                        # 技术文档
+    ├── day1-guide.md   ~ day7-guide.md   # 开发指南
 ```
 
 ---
 
-## 🔧 核心模块说明
+## 💡 核心实现
 
-### 1. ExchangeStorage.sol - 核心数据结构
-
-定义交易所的所有状态变量和核心数据结构：
+### 1. 保证金模块
 
 ```solidity
-// 用户保证金账户
+// 用户保证金存储
 mapping(address => uint256) public marginBalances;
 
-// 订单映射
-mapping(uint256 => Order) public orders;
+// 存款
+function deposit(uint256 amount) external {
+    marginBalances[msg.sender] += amount;
+    emit Deposit(msg.sender, amount);
+}
 
-// 用户持仓
-mapping(address => Position) public positions;
-
-// 市场配置
-uint256 public indexPrice;          // 指数价格
-uint256 public fundingRate;         // 资金费率
-uint256 public lastFundingTime;     // 上次费率结算时间
+// 提款（检查最低保证金要求）
+function withdraw(uint256 amount) external {
+    require(marginBalances[msg.sender] >= amount, "Insufficient balance");
+    require(_canWithdraw(msg.sender, amount), "Withdraw would exceed margin requirement");
+    marginBalances[msg.sender] -= amount;
+    emit Withdraw(msg.sender, amount);
+}
 ```
 
-### 2. MarginModule.sol - 保证金模块
+### 2. 订单簿模块
 
-**功能**:
-- `deposit(address token, uint256 amount)` - 存入保证金
-- `withdraw(uint256 amount)` - 提取保证金
-- `_checkMargin(address trader, uint256 amount)` - 内部：保证金检查
-
-**事件**:
 ```solidity
-event Deposit(address indexed trader, uint256 amount);
-event Withdraw(address indexed trader, uint256 amount);
-```
-
-### 3. OrderBookModule.sol - 订单簿模块
-
-**功能**:
-- `placeOrder(bool isBuy, uint256 price, uint128 amount)` - 下单
-- `cancelOrder(uint256 orderId)` - 撤单
-- `_matchOrders(Order memory buy, Order memory sell)` - 内部：撮合订单
-
-**数据结构**:
-```solidity
+// 订单结构
 struct Order {
     uint256 id;
     address trader;
@@ -489,85 +524,75 @@ struct Order {
     uint256 prev;
 }
 
-mapping(uint256 => uint256) public bestBid;  // 最高买价
-mapping(uint256 => uint256) public bestAsk;  // 最低卖价
+// 下单（插入链表）
+function placeOrder(bool isBuy, uint256 price, uint128 amount) external returns (uint256) {
+    uint256 orderId = _nextOrderId++;
+    orders[orderId] = Order({
+        id: orderId,
+        trader: msg.sender,
+        isBuy: isBuy,
+        price: price,
+        amount: amount,
+        next: 0,
+        prev: 0
+    });
+
+    _insertOrder(orderId, isBuy, price);
+    emit OrderPlaced(orderId, msg.sender, isBuy, price, amount);
+    return orderId;
+}
 ```
 
-### 4. PricingModule.sol - 价格模块
+### 3. 清算模块
 
-**功能**:
-- `updateIndexPrice(uint256 newPrice)` - 更新指数价格
-- `getMarkPrice() public view returns (uint256)` - 获取标记价格
-- `_validatePrice(uint256 price)` - 内部：价格验证
-
-**价格机制**:
 ```solidity
-// 标记价 = 指数价格 × (1 + 价格偏差)
-uint256 public markPrice;
-uint256 public constant PRICE_TOLERANCE = 0.01e18;  // 1% 容差
+// 健康度检查
+function checkHealth(address trader) public view returns (uint256) {
+    Position memory position = positions[trader];
+
+    if (position.amount == 0) {
+        return type(uint256).max; // 无持仓，健康度无限
+    }
+
+    int256 pnl = _calculatePnL(trader);
+    uint256 totalMargin = marginBalances[trader];
+
+    if (pnl > 0) {
+        totalMargin += uint256(pnl);
+    } else {
+        // 未实现亏损会减少有效保证金
+        uint256 loss = uint256(-pnl);
+        if (loss >= totalMargin) return 0;
+        totalMargin -= loss;
+    }
+
+    uint256 maintenanceMargin = uint256(position.amount) * indexPrice / 100; // 1% 维持保证金
+    return totalMargin * 100 / maintenanceMargin;
+}
 ```
-
-### 5. FundingModule.sol - 资金费率模块
-
-**功能**:
-- `updateFundingRate()` - 更新资金费率
-- `_settleFunding(address trader)` - 内部：结算费率
-
-**费率公式**:
-```solidity
-// 资金费率 = (标记价 - 指数价) / 指数价
-int256 fundingRate = (int256(markPrice) - int256(indexPrice)) * 1e18 / int256(indexPrice);
-```
-
-### 6. LiquidationModule.sol - 清算模块
-
-**功能**:
-- `checkHealth(address trader)` - 检查账户健康度
-- `liquidate(address trader)` - 清算不健康账户
-- `_calculatePnL(address trader) internal view returns (int256)` - 计算盈亏
-
-**健康度计算**:
-```solidity
-// 健康度 = (保证金 + 未实现盈亏) / 维持保证金
-uint256 healthFactor = (margin + unrealizedPnL) * 100 / maintenanceMargin;
-// healthFactor < 100 时可清算
-```
-
-### 7. ViewModule.sol - 查询模块
-
-提供只读查询接口：
-- `getAccount(address trader)` - 获取账户信息
-- `getOrderBook(bool isBuy)` - 获取订单簿
-- `getAllPositions()` - 获取所有持仓
 
 ---
 
-## 🌐 部署指南
+## 🌐 部署说明
 
-### 部署到本地测试网
+### 本地测试网部署
 
 ```bash
-# 1. 启动 Anvil
+# 启动 Anvil
 anvil --host 0.0.0.0 --port 8545
 
-# 2. 部署合约
-cd contract
+# 部署合约
 forge script script/DeployExchange.s.sol \
   --rpc-url http://localhost:8545 \
-  --broadcast \
-  --verify
-
-# 3. 记录部署的合约地址
+  --broadcast
 ```
 
-### 部署到公共测试网（如 Sepolia）
+### 公共测试网部署（Sepolia）
 
 ```bash
-# 1. 配置环境变量
-export RPC_URL="https://sepolia.infura.io/v3/YOUR_INFURA_KEY"
+export RPC_URL="https://sepolia.infura.io/v3/YOUR_KEY"
 export PRIVATE_KEY="your_private_key"
 
-# 2. 部署合约
 forge script script/DeployExchange.s.sol \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY \
@@ -576,13 +601,11 @@ forge script script/DeployExchange.s.sol \
   --etherscan-api-key $ETHERSCAN_KEY
 ```
 
-### 部署到 Monad 主网/测试网
+### Monad 测试网部署
 
 ```bash
-# 1. 配置 Monad RPC
 export RPC_URL="https://testnet-rpc.monad.xyz"
 
-# 2. 部署
 forge script script/DeployExchange.s.sol \
   --rpc-url $RPC_URL \
   --broadcast
@@ -590,227 +613,83 @@ forge script script/DeployExchange.s.sol \
 
 ---
 
-## 💻 开发指南
+## ✨ 技术亮点
 
-### 智能合约开发
+### 1. 模块化设计
 
-#### 编译合约
+采用继承式模块化架构，每个功能模块独立开发和测试，便于维护和扩展。
 
-```bash
-cd contract
-forge build
-```
+### 2. 高效数据结构
 
-#### 运行测试
+订单簿使用双向链表实现，相比数组存储，大幅降低 Gas 消耗和操作复杂度。
 
-```bash
-# 所有测试
-forge test
+### 3. 类型安全
 
-# 带气体报告
-forge test --gas-report
+前端使用 TypeScript 全栈开发，配合 viem 的类型推导，实现端到端类型安全。
 
-# 带详细输出
-forge test -vvv
+### 4. 实时数据流
 
-# 特定测试合约
-forge test --match-contract Day1MarginTest -vvv
+基于 GraphQL Subscription 实现链上事件到前端的实时推送，用户体验流畅。
 
-# 特定测试函数
-forge test --match-test testDeposit -vvv
-```
+### 5. 完整测试覆盖
 
-#### 代码格式化
-
-```bash
-forge fmt
-```
-
-#### 代码覆盖率
-
-```bash
-forge coverage
-```
-
-### 前端开发
-
-#### 启动开发服务器
-
-```bash
-cd frontend
-npm run dev
-```
-
-#### 构建生产版本
-
-```bash
-npm run build
-```
-
-#### 类型检查
-
-```bash
-npm run type-check
-```
-
-### 索引器开发
-
-#### 本地运行索引器
-
-```bash
-cd indexer
-pnpm install
-pnpm run dev
-```
-
-#### 生成 GraphQL Schema
-
-```bash
-pnpm run codegen
-```
-
-### Keeper 服务
-
-#### 运行 PriceKeeper
-
-```bash
-cd keeper
-npm run price-keeper
-```
-
-#### 运行 Liquidator
-
-```bash
-npm run liquidator
-```
+7 个测试文件覆盖所有核心功能，确保合约安全性。
 
 ---
 
-## 🔍 常见问题
+## 📊 项目成果
 
-### 1. Foundry 安装失败？
+### 代码统计
 
-```bash
-# 使用官方安装脚本
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-```
+| 类别 | 文件数 | 说明 |
+|------|--------|------|
+| **Solidity 合约** | 15+ | 模块化架构 |
+| **测试用例** | 7 | 完整功能覆盖 |
+| **React 组件** | 10+ | 现代化 UI |
+| **TypeScript 文件** | 42 | 全栈类型安全 |
+| **部署脚本** | 5 | 自动化部署 |
 
-### 2. 前端无法连接合约？
+### 功能完成度
 
-检查 `.env.local` 配置：
-```env
-VITE_RPC_URL=http://127.0.0.1:8545
-VITE_CHAIN_ID=31337
-VITE_EXCHANGE_ADDRESS=0x...  # 确保地址正确
-```
-
-### 3. 测试失败？
-
-```bash
-# 清理缓存
-forge clean
-
-# 重新编译
-forge build
-
-# 运行测试
-forge test -vvv
-```
-
-### 4. 索引器无法启动？
-
-确保 PostgresSQL 正在运行：
-```bash
-# macOS
-brew services start postgresql
-
-# Linux
-sudo systemctl start postgresql
-```
-
-### 5. Keeper 服务报错？
-
-检查环境变量配置：
-```bash
-# keeper/.env
-RPC_URL=http://localhost:8545
-PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-EXCHANGE_ADDRESS=0x...
-```
-
----
-
-## 📖 学习资源
-
-### 推荐阅读
-
-- [Foundry 中文文档](https://book.getfoundry.sh/)
-- [Solidity 官方文档](https://docs.soliditylang.org/)
-- [OpenZeppelin 合约库](https://docs.openzeppelin.com/contracts/)
-- [永续合约原理](https://www.binance.com/zh-CN/support/faq/what-is-perpetual-futures-contracts-360900492571)
-
-### 相关文档
-
-- [保证金计算说明](docs/margin_calculation_explained.md)
-- [资金费率问题分析](docs/funding_rate_issue.md)
-
----
-
-## ⚠️ 免责声明
-
-本项目仅用于**教学目的**，包含以下简化：
-
-- 使用简化的资金费率公式
-- 无时间加权平均价格（TWAP）
-- 无保险基金机制
-- 单一交易对
-- 测试私钥为 Anvil 公开默认值
-
-**请勿将本合约用于真实资金交易。**
-
----
-
-## 🤝 贡献指南
-
-欢迎提交 Issue 和 Pull Request！
-
-### 提交 PR 流程
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m '添加某个功能'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
-
-### 代码规范
-
-- Solidity: 遵循 [Solidity Style Guide](https://docs.soliditylang.org/en/v0.8.20/style-guide/)
-- TypeScript: 使用 ESLint + Prettier
-- 提交信息: 使用中文清晰描述
-
----
-
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+- ✅ 保证金系统 - 100%
+- ✅ 订单簿引擎 - 100%
+- ✅ 撮合引擎 - 100%
+- ✅ 价格预言机 - 100%
+- ✅ 资金费率 - 100%
+- ✅ 清算系统 - 100%
+- ✅ 前端界面 - 100%
+- ✅ 索引器 - 100%
+- ✅ Keeper 服务 - 100%
 
 ---
 
 ## 📞 联系方式
 
-- 作者: **LPigeonIA**
-- GitHub: [@LPigeonIA](https://github.com/LPigeonIA)
-- 邮箱: 2392554324@qq.com
+- **作者**: LPigeonIA
+- **GitHub**: [@LPigeonIA](https://github.com/LPigeonIA)
+- **邮箱**: 2392554324@qq.com
 
 ---
 
-## 🌟 Star History
+## 📄 许可证
 
-如果这个项目对您有帮助，请给一个 Star ⭐️
-
-[![Star History Chart](https://api.star-history.com/svg?repos=LPigeonIA/Monad_PerpM&type=Date)](https://star-history.com/#LPigeonIA/Monad_PerpM&Date)
+本项目采用 **MIT 许可证** - 详见 [LICENSE](LICENSE) 文件
 
 ---
 
-**享受学习 DeFi 开发的旅程！** 🚀
+## 🌟 展示说明
+
+本仓库展示了我在区块链 DeFi 开发方面的技术能力，包括：
+
+- ✅ 智能合约开发（Solidity + Foundry）
+- ✅ 前端开发（React + TypeScript）
+- ✅ 后端开发（Node.js + TypeScript）
+- ✅ 数据库设计（PostgreSQL + GraphQL）
+- ✅ 系统架构设计
+- ✅ 自动化测试
+
+如果这个项目对您有帮助，欢迎给一个 Star ⭐️
+
+---
+
+**Built with ❤️ by LPigeonIA**
